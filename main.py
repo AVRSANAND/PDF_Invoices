@@ -29,6 +29,8 @@ for filepath in filepaths:
     pdf.set_font(family="Times", size=16, style="B")
     pdf.cell(w=50, h=8, txt=f"Date {Date} ", ln=1)
 
+    pdf.cell(w=0,h=8,ln=1)
+
     df = pd.read_excel(filepath, sheet_name="Sheet 1")
 
     # Header
@@ -52,5 +54,25 @@ for filepath in filepaths:
         pdf.cell(w=35, h=8, txt=f"{item['amount_purchased']}",border=1)
         pdf.cell(w=30, h=8, txt=f"{item['price_per_unit']}",border=1)
         pdf.cell(w=30, h=8, txt=f"{item['total_price']}",border=1, ln=1)
+
+    # Total sum in table
+    total = df["total_price"].sum()
+    pdf.set_font(family="Times", size=10)
+    pdf.set_text_color(80, 80, 80)
+    pdf.cell(w=30, h=8, txt="", border=1)
+    pdf.cell(w=70, h=8, txt="", border=1)
+    pdf.cell(w=35, h=8, txt="", border=1)
+    pdf.cell(w=30, h=8, txt="", border=1)
+    pdf.cell(w=30, h=8, txt=f"{total}",border=1, ln=1)
+
+    pdf.cell(w=0,h=8,ln=1)
+    # Total sum
+    pdf.set_font(family="Times", size=12, style="B")
+    pdf.cell(w=30, h=8, txt=f"The Total Price is {total}", ln=1)
+
+    # Company Name & Logo
+    pdf.set_font(family="Times", size=12,style="B")
+    pdf.cell(w=30, h=8, txt=f"Company Name")
+    pdf.image("python.png", w=8)
 
     pdf.output(f"PDFs/{Doc_Name}.pdf")
